@@ -5,26 +5,23 @@ addReviewers: true
 addAssignees: author
 
 # A list of reviewers to be added to pull requests (GitHub user name)
-reviewers: 
+reviewers:
+  - andrasi-gergo
   - UngerAttila
   - nitslaszlo
 
-
-# A list of keywords to be skipped the process that add reviewers if pull requests include it 
-skipKeywords:
-  - wip
-
-# A number of reviewers added to the pull request
+# A number of reviewers added to the PR
 # Set 0 to add all the reviewers (default: 0)
 numberOfReviewers: 0
 
+# A list of assignees, overrides reviewers if set
+assignees:
 
-
-# A number of assignees to add to the pull request
+# A number of assignees to add to the PRs
 # Set to 0 to add all of the assignees.
 # Uses numberOfReviewers if unset.
 numberOfAssignees: 1
 
-# A list of keywords to be skipped the process that add reviewers if pull requests include it
-# skipKeywords:
-#   - wip
+# A list of keywords to be skipped the process if PR's title include it
+skipKeywords:
+  - wip
