@@ -1,0 +1,50 @@
+[
+    {
+        "name": "nyakörv",
+        "price": 3200,
+        "type": "kiegészítő",
+        "discription": "Egy nagyon kényelmes naykörv.",
+        "orders_id": [
+            {
+                "ref": "Orders",
+                "type": ""
+            },
+            {
+                "ref": "Orders",
+                "type": ""
+            },
+            {
+                "ref": "Orders",
+                "type": ""
+            }
+        ]
+    },
+    {
+        "name": "kutyatáp",
+        "price": 15320,
+        "type": "tápok",
+        "discription": "Finom és egészséges eledel a kis kedvencünk számára.",
+        "orders_id": [
+            {
+                "ref": "Orders",
+                "type": ""
+            },
+            {
+                "ref": "Orders",
+                "type": ""
+            }
+        ]
+    },
+    {
+        "name": "drágább kutyatáp",
+        "price": 18000,
+        "type": "tápok",
+        "discription": "Drága, finom és egészséges eledel a kis kedvencünk számára.",
+        "orders_id": [
+            {
+                "ref": "Orders",
+                "type": ""
+            }
+        ]
+    }
+]
