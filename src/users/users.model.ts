@@ -17,7 +17,6 @@ const userSchema = new Schema<IUser>(
         first_name: String,
         last_name: String,
         user_name: String,
-        name: String,
         password_hash: String,
         address: String,
         email: String,

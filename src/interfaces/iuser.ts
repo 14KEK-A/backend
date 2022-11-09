@@ -6,7 +6,6 @@ export default interface IUser {
     first_name: string;
     last_name: string;
     user_name: string;
-    name: string;
     email: string;
     password_hash: string;
     address?: string;
