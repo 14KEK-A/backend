@@ -1,0 +1,42 @@
+[
+    {
+        "_id": {
+            "$oid": "61b5ea14f39e4edcf5b8a3bd"
+        },
+        "ship_date": "2022-10-25T14:59:11.437Z",
+        "order_date": "2022-11-25T14:59:11.437Z",
+        "orders_id": {
+            "$oid": "61b634d1f39e4edcf5b8a415"
+        },
+        "products": [
+            {
+                "product_id": {
+                    "$oid": "61b5f048f39e4edcf5b8a3ca"
+                },
+                "discount": true,
+                "price": 545,
+                "quantity": 455
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "61b63504f39e4edcf5b8a41b"
+        },
+        "ship_date": "2022-10-25T14:59:11.437Z",
+        "order_date": "2022-11-25T14:59:11.437Z",
+        "orders_id": {
+            "$oid": "61b63540f39e4edcf5b8a421"
+        },
+        "products": [
+            {
+                "product_id": {
+                    "$oid": "61b6332df39e4edcf5b8a407"
+                },
+                "discount": true,
+                "price": 555,
+                "quantity": 555
+            }
+        ]
+    }
+]
