@@ -1,0 +1,34 @@
+[
+    {
+        "_id": {
+            "$oid": "61dc0232e397a1e9cf988b2b"
+        },
+        "star": 5,
+        "commment" : "valami1",
+        "users_id": {
+            "$oid": "61b5e9c0f39e4edcf5b8a3b9"
+        },
+        "partners_id": {
+            "$oid": "507f1f77bcf86cd799439011"
+        },
+        "product_id": {
+            "$oid": "507f191e810c19729de860ea"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "61dc02ebe397a1e9cf988b31"
+        },
+        "star": 6,
+        "commment" : "valami2",
+        "users_id": {
+            "$oid": "61b5e9c0f39e4edcf5b8a3b9"
+        },
+        "partners_id": {
+            "$oid": "507f1f77bcf86cd799439011"
+        },
+        "product_id": {
+            "$oid": "507f191e810c19729de860ea"
+        }
+    }
+]

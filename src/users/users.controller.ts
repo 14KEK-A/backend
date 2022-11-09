@@ -8,7 +8,7 @@ import User from "../interfaces/iuser";
 import UserNotFoundException from "../exceptions/UserNotFound";
 import IdNotValidException from "../exceptions/IdNotValid";
 import HttpError from "../exceptions/Http";
-
+import authMiddleware from "../middlewares/auth";
 export default class UserController implements Controller {
     path = "/users";
     router = Router();
@@ -19,7 +19,7 @@ export default class UserController implements Controller {
     }
 
     private initializeRoutes() {
-        this.router.get(this.path, this.getAllUsers);
+        this.router.get(this.path, authMiddleware, this.getAllUsers);
         this.router.get(`${this.path}/:id`, this.getUserById);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateUserDto, true)], this.modifyUser);
         this.router.delete(`${this.path}/:id`, this.deleteUser);

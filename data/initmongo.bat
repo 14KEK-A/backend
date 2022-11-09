@@ -20,10 +20,10 @@ SET /P AREYOUSURE=Are you sure (Y/[N])?
 IF /I "%AREYOUSURE%" NEQ "Y" GOTO END
 ECHO ---------- Importing to the local database ----------
 REM %import% --uri=%local%  --collection=users --drop --file=users.json --jsonArray
-%import% --uri=%local%  --collection=orders --drop --file=orders.json --jsonArray
+REM %import% --uri=%local%  --collection=orders --drop --file=orders.json --jsonArray
 REM %import% --uri=%local%  --collection=partners --drop --file=partners.json --jsonArray
 REM %import% --uri=%local%  --collection=ratings --drop --file=ratings.json --jsonArray
-REM %import% --uri=%local%  --collection=products --drop --file=products.json --jsonArray
+%import% --uri=%local%  --collection=products --drop --file=products.json --jsonArray
 GOTO END
 
 :EXPORT

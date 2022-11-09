@@ -22,14 +22,22 @@ export default class App {
 
     private initializeMiddlewares() {
         this.app.use(json());
-        // Enabled CORS:
+        // // Enabled CORS:
+        // this.app.use(
+        //     cors({
+        //         origin: ["http://localhost:4000", "http://127.0.0.1:4000"],
+        //         credentials: true,
+        //     }),
+        // );
+        // this.app.use(loggerMiddleware);
         this.app.use(
             cors({
-                origin: ["http://localhost:4000", "http://127.0.0.1:4000"],
+                origin: ["https://minimal-dialogs.netlify.app", "http://localhost:8080", "http://127.0.0.1:8080"],
+                allowedHeaders: ["Content-Type", "Authorization", "Set-Cookie", "Cache-Control", "Content-Language", "Expires", "Last-Modified", "Pragma"],
                 credentials: true,
+                exposedHeaders: ["Set-Cookie"],
             }),
         );
-        this.app.use(loggerMiddleware);
     }
 
     private initializeErrorHandling() {
