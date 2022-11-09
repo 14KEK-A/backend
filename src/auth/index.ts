@@ -1,4 +1,4 @@
-import { Router } from "express";
+/*import { Router } from "express";
 import LoginController from "./login";
 import LogoutController from "./logout";
 import RegisterController from "./register";
@@ -20,3 +20,4 @@ export default class AuthenticationController implements Controller {
         new RegisterController(this.path, this.router, this.model);
     }
 }
+*/

@@ -1,40 +1,28 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IsNumber, IsNotEmpty, IsString, IsUrl } from "class-validator";
+import { IsNumber, IsString, IsUrl } from "class-validator";
 
 export default class CreateUsersDto {
-    @IsNotEmpty()
     @IsString()
     public role_name: string;
 
-    @IsNotEmpty()
-    @IsString()
-    public role_bits: string;
+    @IsNumber()
+    public role_bits: number;
 
-    @IsNotEmpty()
     @IsString()
     public first_name: string;
 
-    @IsNotEmpty()
     @IsString()
     public last_name: string;
 
-    @IsNotEmpty()
     @IsString()
     public user_name: string;
 
-    @IsNotEmpty()
     @IsString()
-    public name: string;
+    public password: string;
 
-    @IsNotEmpty()
-    @IsString()
-    public password_hash: string;
-
-    @IsNotEmpty()
     @IsString()
     public email: string;
 
-    @IsNotEmpty()
     @IsUrl()
     @IsString()
     public picture_URL: string;
