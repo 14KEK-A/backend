@@ -4,6 +4,7 @@ import cors from "cors";
 import errorMiddleware from "./middlewares/error";
 import loggerMiddleware from "./middlewares/logger";
 import Controller from "./interfaces/controller";
+import cookieParser from "cookie-parser";
 
 export default class App {
     public app: Express;
@@ -22,6 +23,7 @@ export default class App {
 
     private initializeMiddlewares() {
         this.app.use(json());
+        this.app.use(cookieParser());
         // // Enabled CORS:
         // this.app.use(
         //     cors({
