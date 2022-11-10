@@ -1,0 +1,32 @@
+[
+    {
+        "_id": {
+            "$oid": "61b5e9c0f39e4edcf5b8a3b9"
+        },
+        "role_name": "user",
+        "role_bits": 255,
+        "first_name": "Nagy",
+        "last_name": "Tamás",
+        "user_name": "NagyTOmi",
+        "password_hash": "$2b$10$9Czj8XCCZ6Wg5h9HSngl2eMqAO0Pk/LFmf.LrfeLKDXsBQaI07Pv.",
+        "address": "Minta",
+        "email": "student001@jedlik.eu",
+        "phone_number": "055879555164",
+        "picture_URL": "none"
+    },
+    {
+        "_id": {
+            "$oid": "61b5ea14f39e4edcf5b8a3bd"
+        },
+        "role_name": "user",
+        "role_bits": 255,
+        "first_name": "Kiss",
+        "last_name": "Tamás",
+        "user_name": "KissTOmi",
+        "password_hash": "$2b$10$Rp5avm47rbRHxJxy8sEVueBTLYFAyrVIFiAebUAJDMKlM5raFnwpi",
+        "address": "Mintacím",
+        "email": "student002@jedlik.eu",
+        "phone_number": "055555164",
+        "picture_URL": "none"
+    }
+]

@@ -1,0 +1,30 @@
+[
+    {
+        "_id": {
+            "$oid": "61dc02ebe397a1e9cf988b31"
+        },
+        "name": "partner001",
+        "address": "Mintapartner22",
+        "email": "partner001@jedlik.eu",
+        "phone_number": "0845879555164",
+        "users_id": [
+            {
+                "$oid": "507f1f77bcf86cd799439011"
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "61dc03c0e397a1e9cf988b37"
+        },
+        "name": "partner002",
+        "address": "Mintapartner22",
+        "email": "partner001@jedlik.eu",
+        "phone_number": "0845879555164",
+        "users_id": [
+            {
+                "$oid": "507f1f77bcf86cd799439012"
+            }
+        ]
+    }
+]
