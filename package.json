@@ -1,7 +1,7 @@
 {
-    "name": "jedlik-express-mongoose-ts-backend-template",
+    "name": "4pet",
     "version": "1.0.0",
-    "description": "Jedlik project template for backend programming.",
+    "description": "4pet",
     "main": "src/server.ts",
     "repository": {
         "private": false,
