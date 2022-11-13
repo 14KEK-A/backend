@@ -32,10 +32,10 @@ export default class LoginController implements Controller {
             const user = await this.userModel.findOne({ email: userData.email });
             if (!user) return next(new WrongCredentialsException());
 
-            const isPasswordMatching = await compare(userData.password, user.password_hash);
+            const isPasswordMatching = await compare(userData.password, user.password);
             if (!isPasswordMatching) return next(new WrongCredentialsException());
 
-            user.password_hash = undefined;
+            user.password = undefined;
             res.send(user);
         } catch (error) {
             next(new HttpError(400, (error as Error).message));

@@ -35,7 +35,7 @@ export default class RegisterController implements Controller {
                 ...userData,
                 password: hashedPassword,
             });
-            newUser.password_hash = undefined;
+            newUser.password = undefined;
 
             res.send(`user created with ${newUser.email}`);
         } catch (error) {

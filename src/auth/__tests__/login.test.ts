@@ -5,9 +5,9 @@ import "dotenv/config";
 import validateEnv from "../../utils/validateEnv";
 import App from "../../app";
 import userModel from "../../users/users.model";
-import AuthenticationController from "auth/index";
+import AuthenticationController from "auth/authentication.controller";
 
-validateEnv("test");
+validateEnv();
 
 describe("POST /login", () => {
     let server: Application;
