@@ -8,17 +8,16 @@ import Product from "../interfaces/iproduct";
 import IdNotValidException from "../exceptions/IdNotValid";
 import HttpError from "../exceptions/Http";
 export default class ProductController implements Controller {
-    path = "/products";
-    router = Router();
+    public path = "/products";
+    public router = Router();
     private product = productModel;
     //private order = orderModel;
-
     constructor() {
         this.initializeRoutes();
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.path}/all`, this.getAllProducts);
+        this.router.get(this.path, this.getAllProducts);
         this.router.get(`${this.path}/:id`, this.getProductById);
         this.router.post(this.path, this.createProduct);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateProductDto, true)], this.modifyProduct);

@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
-
 import Controller from "../interfaces/controller";
 import CreateRatingsDto from "./ratings.dto";
-import HttpException from "../exceptions/Http";
 import IdNotValidException from "../exceptions/IdNotValid";
 import Rating from "../interfaces/irating";
 import { Types } from "mongoose";
@@ -21,6 +19,7 @@ export default class RatingController implements Controller {
     private initializeRoutes() {
         this.router.get(this.path, this.getAllRatings);
         this.router.get(`${this.path}/:id`, this.getRatingById);
+        this.router.post(this.path, this.createRating);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateRatingsDto, true)], this.modifyRating);
         this.router.delete(`${this.path}/:id`, this.deleteRating);
     }
@@ -88,6 +87,16 @@ export default class RatingController implements Controller {
             //if (!user) return next(new UserNotFoundException(id));
 
             res.send(rating);
+        } catch (error) {
+            next(new HttpError(400, error.message));
+        }
+    };
+    private createRating = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const ratingData = req.body;
+            const newrating = await this.rating.create({ ...ratingData });
+            if (!newrating) return next(new HttpError(400, "Failed to create product"));
+            res.send(newrating);
         } catch (error) {
             next(new HttpError(400, error.message));
         }
