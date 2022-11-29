@@ -8,6 +8,7 @@ import Partner from "../interfaces/ipartner";
 //import UserNotFoundException from "../exceptions/UserNotFound";
 import IdNotValidException from "../exceptions/IdNotValid";
 import HttpError from "../exceptions/Http";
+import authMiddleware from "../middlewares/auth";
 
 export default class UserController implements Controller {
     path = "/partners";
@@ -21,6 +22,7 @@ export default class UserController implements Controller {
     private initializeRoutes() {
         this.router.get(this.path, this.getAllPartners);
         this.router.get(`${this.path}/:id`, this.getPartnerById);
+        this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedPartners);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreatePartnerDto, true)], this.modifyPartner);
         this.router.delete(`${this.path}/:id`, this.deletePartner);
     }
@@ -29,6 +31,35 @@ export default class UserController implements Controller {
         try {
             const partners = await this.partner.find();
             res.send(partners);
+        } catch (error) {
+            next(new HttpError(400, error.message));
+        }
+    };
+    private getPaginatedPartners = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const offset = parseInt(req.params.offset);
+            const limit = parseInt(req.params.limit);
+            const order = req.params.order; // order?
+            const sort = parseInt(req.params.sort); // desc: -1  asc: 1
+            let partners = [];
+            let count = 0;
+            if (req.params.keyword) {
+                const regex = new RegExp(req.params.keyword, "i"); // i for case insensitive
+                count = await this.partner.find({ $or: [{ partnerName: { $regex: regex } }, { description: { $regex: regex } }] }).count();
+                partners = await this.partner
+                    .find({ $or: [{ partnerName: { $regex: regex } }, { description: { $regex: regex } }] })
+                    .sort(`${sort == -1 ? "-" : ""}${order}`)
+                    .skip(offset)
+                    .limit(limit);
+            } else {
+                count = await this.partner.countDocuments();
+                partners = await this.partner
+                    .find({})
+                    .sort(`${sort == -1 ? "-" : ""}${order}`)
+                    .skip(offset)
+                    .limit(limit);
+            }
+            res.send({ count: count, partners: partners });
         } catch (error) {
             next(new HttpError(400, error.message));
         }

@@ -21,6 +21,7 @@ export default class UserController implements Controller {
     private initializeRoutes() {
         this.router.get(this.path, authMiddleware, this.getAllUsers);
         this.router.get(`${this.path}/:id`, this.getUserById);
+        this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedUsers);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateUserDto, true)], this.modifyUser);
         this.router.delete(`${this.path}/:id`, this.deleteUser);
     }
@@ -48,6 +49,35 @@ export default class UserController implements Controller {
         }
     };
 
+    private getPaginatedUsers = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const offset = parseInt(req.params.offset);
+            const limit = parseInt(req.params.limit);
+            const order = req.params.order; // order?
+            const sort = parseInt(req.params.sort); // desc: -1  asc: 1
+            let users = [];
+            let count = 0;
+            if (req.params.keyword) {
+                const regex = new RegExp(req.params.keyword, "i"); // i for case insensitive
+                count = await this.user.find({ $or: [{ userName: { $regex: regex } }, { description: { $regex: regex } }] }).count();
+                users = await this.user
+                    .find({ $or: [{ userName: { $regex: regex } }, { description: { $regex: regex } }] })
+                    .sort(`${sort == -1 ? "-" : ""}${order}`)
+                    .skip(offset)
+                    .limit(limit);
+            } else {
+                count = await this.user.countDocuments();
+                users = await this.user
+                    .find({})
+                    .sort(`${sort == -1 ? "-" : ""}${order}`)
+                    .skip(offset)
+                    .limit(limit);
+            }
+            res.send({ count: count, users: users });
+        } catch (error) {
+            next(new HttpError(400, error.message));
+        }
+    };
     private modifyUser = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;

@@ -7,6 +7,7 @@ import Controller from "../interfaces/controller";
 import Order from "../interfaces/iorder";
 import IdNotValidException from "../exceptions/IdNotValid";
 import HttpError from "../exceptions/Http";
+import authMiddleware from "../middlewares/auth";
 
 export default class UserController implements Controller {
     path = "/orders";
@@ -20,6 +21,7 @@ export default class UserController implements Controller {
     private initializeRoutes() {
         this.router.get(this.path, this.getAllOrders);
         this.router.get(`${this.path}/:id`, this.getOrderById);
+        this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedOrders);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateOrderDto, true)], this.modifyOrder);
         this.router.delete(`${this.path}/:id`, this.deleteOrder);
     }
@@ -28,6 +30,35 @@ export default class UserController implements Controller {
         try {
             const orders = await this.order.find();
             res.send(orders);
+        } catch (error) {
+            next(new HttpError(400, error.message));
+        }
+    };
+    private getPaginatedOrders = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const offset = parseInt(req.params.offset);
+            const limit = parseInt(req.params.limit);
+            const order = req.params.order; // order?
+            const sort = parseInt(req.params.sort); // desc: -1  asc: 1
+            let orders = [];
+            let count = 0;
+            if (req.params.keyword) {
+                const regex = new RegExp(req.params.keyword, "i"); // i for case insensitive
+                count = await this.order.find({ $or: [{ orderName: { $regex: regex } }, { description: { $regex: regex } }] }).count();
+                orders = await this.order
+                    .find({ $or: [{ orderName: { $regex: regex } }, { description: { $regex: regex } }] })
+                    .sort(`${sort == -1 ? "-" : ""}${order}`)
+                    .skip(offset)
+                    .limit(limit);
+            } else {
+                count = await this.order.countDocuments();
+                orders = await this.order
+                    .find({})
+                    .sort(`${sort == -1 ? "-" : ""}${order}`)
+                    .skip(offset)
+                    .limit(limit);
+            }
+            res.send({ count: count, orders: orders });
         } catch (error) {
             next(new HttpError(400, error.message));
         }

@@ -7,6 +7,7 @@ import Controller from "../interfaces/controller";
 import Product from "../interfaces/iproduct";
 import IdNotValidException from "../exceptions/IdNotValid";
 import HttpError from "../exceptions/Http";
+import authMiddleware from "../middlewares/auth";
 export default class ProductController implements Controller {
     public path = "/products";
     public router = Router();
@@ -19,6 +20,7 @@ export default class ProductController implements Controller {
     private initializeRoutes() {
         this.router.get(this.path, this.getAllProducts);
         this.router.get(`${this.path}/:id`, this.getProductById);
+        this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedProducts);
         this.router.post(this.path, this.createProduct);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateProductDto, true)], this.modifyProduct);
         this.router.delete(`${this.path}/:id`, this.deleteProductById);
@@ -28,6 +30,35 @@ export default class ProductController implements Controller {
         try {
             const products = await this.product.find();
             res.send(products);
+        } catch (error) {
+            next(new HttpError(400, error.message));
+        }
+    };
+    private getPaginatedProducts = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const offset = parseInt(req.params.offset);
+            const limit = parseInt(req.params.limit);
+            const order = req.params.order; // order?
+            const sort = parseInt(req.params.sort); // desc: -1  asc: 1
+            let products = [];
+            let count = 0;
+            if (req.params.keyword) {
+                const regex = new RegExp(req.params.keyword, "i"); // i for case insensitive
+                count = await this.product.find({ $or: [{ productName: { $regex: regex } }, { description: { $regex: regex } }] }).count();
+                products = await this.product
+                    .find({ $or: [{ productName: { $regex: regex } }, { description: { $regex: regex } }] })
+                    .sort(`${sort == -1 ? "-" : ""}${order}`)
+                    .skip(offset)
+                    .limit(limit);
+            } else {
+                count = await this.product.countDocuments();
+                products = await this.product
+                    .find({})
+                    .sort(`${sort == -1 ? "-" : ""}${order}`)
+                    .skip(offset)
+                    .limit(limit);
+            }
+            res.send({ count: count, products: products });
         } catch (error) {
             next(new HttpError(400, error.message));
         }
