@@ -1,8 +1,8 @@
 import express, { Express, json } from "express";
+import morgan from "morgan";
 import mongoose from "mongoose";
 import cors from "cors";
 import errorMiddleware from "./middlewares/error";
-import loggerMiddleware from "./middlewares/logger";
 import Controller from "./interfaces/controller";
 import cookieParser from "cookie-parser";
 
@@ -40,6 +40,7 @@ export default class App {
                 exposedHeaders: ["Set-Cookie"],
             }),
         );
+        this.app.use(morgan("dev"));
     }
 
     private initializeErrorHandling() {
