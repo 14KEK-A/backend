@@ -4,6 +4,7 @@ export default interface IProduct {
     name: string;
     price: number;
     type: string;
-    discription: string;
+    description: string;
+    picture: string;
     orders_id: Types.ObjectId | string;
 }

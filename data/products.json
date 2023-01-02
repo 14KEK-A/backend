@@ -6,7 +6,8 @@
         "name": "nyakörv",
         "price": 3200,
         "type": "kiegészítő",
-        "discription": "Egy nagyon kényelmes naykörv.",
+        "description": "Egy nagyon kényelmes naykörv.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
         "orders_id": [
             {
                 "$oid": "61b63504f39e4edcf5b8a41b"
@@ -23,7 +24,8 @@
         "name": "kutyatáp",
         "price": 15320,
         "type": "tápok",
-        "discription": "Finom és egészséges eledel a kis kedvencünk számára.",
+        "description": "Finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
         "orders_id": [
             {
                 "$oid": "61b63504f39e4edcf5b8a41b"
@@ -40,7 +42,173 @@
         "name": "drágább kutyatáp",
         "price": 18000,
         "type": "tápok",
-        "discription": "Drága, finom és egészséges eledel a kis kedvencünk számára.",
+        "description": "Drága, finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            }
+        ]
+    }
+    {
+        "_id": {
+            "$oid": "61b6332df39e4edcf5b8a407"
+        },
+        "name": "kutyatáp XL",
+        "price": 15320,
+        "type": "tápok",
+        "description": "Finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            },
+            {
+                "$oid": "61b5ea14f39e4edcf5b8a3bd"
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "61b5e9c0f39e4edcf5b8a3b9"
+        },
+        "name": "drágább kutyatáp XL",
+        "price": 18000,
+        "type": "tápok",
+        "description": "Drága, finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            }
+        ]
+    }
+    {
+        "_id": {
+            "$oid": "61b6332df39e4edcf5b8a407"
+        },
+        "name": " Macsak táp",
+        "price": 15320,
+        "type": "tápok",
+        "description": "Finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            },
+            {
+                "$oid": "61b5ea14f39e4edcf5b8a3bd"
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "61b5e9c0f39e4edcf5b8a3b9"
+        },
+        "name": "drágább macskatáp",
+        "price": 18000,
+        "type": "tápok",
+        "description": "Drága, finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            }
+        ]
+    }
+    {
+        "_id": {
+            "$oid": "61b6332df39e4edcf5b8a407"
+        },
+        "name": "macsakatáp XL",
+        "price": 15320,
+        "type": "tápok",
+        "description": "Finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            },
+            {
+                "$oid": "61b5ea14f39e4edcf5b8a3bd"
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "61b5e9c0f39e4edcf5b8a3b9"
+        },
+        "name": "drágább macskatáp XL",
+        "price": 18000,
+        "type": "tápok",
+        "description": "Drága, finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "61b6332df39e4edcf5b8a407"
+        },
+        "name": "kutyatáp",
+        "price": 15320,
+        "type": "tápok",
+        "description": "Finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            },
+            {
+                "$oid": "61b5ea14f39e4edcf5b8a3bd"
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "61b5e9c0f39e4edcf5b8a3b9"
+        },
+        "name": "hörcsög eledel",
+        "price": 18000,
+        "type": "tápok",
+        "description": "Drága, finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "61b6332df39e4edcf5b8a407"
+        },
+        "name": "hörcsög eledel XL",
+        "price": 15320,
+        "type": "tápok",
+        "description": "Finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
+        "orders_id": [
+            {
+                "$oid": "61b63504f39e4edcf5b8a41b"
+            },
+            {
+                "$oid": "61b5ea14f39e4edcf5b8a3bd"
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "61b5e9c0f39e4edcf5b8a3b9"
+        },
+        "name": "drágább kutyatáp",
+        "price": 18000,
+        "type": "tápok",
+        "description": "Drága, finom és egészséges eledel a kis kedvencünk számára.",
+        "picture": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_27/2918166/190701-dog-food-eating-bowl-ac-527p.jpg",
         "orders_id": [
             {
                 "$oid": "61b63504f39e4edcf5b8a41b"

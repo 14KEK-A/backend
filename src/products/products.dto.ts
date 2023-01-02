@@ -16,4 +16,8 @@ export default class CreateProductsDto {
     @IsNotEmpty()
     @IsString()
     public types: string;
+
+    @IsNotEmpty()
+    @IsString()
+    public picture: string;
 }

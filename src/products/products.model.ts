@@ -6,7 +6,8 @@ const productSchema = new Schema<IProduct>(
         name: String,
         price: Number,
         type: String,
-        discription: String,
+        description: String,
+        picture: String,
 
         orders_id: [
             {

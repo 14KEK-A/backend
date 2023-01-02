@@ -23,17 +23,17 @@ REM %import% --uri=%local%  --collection=users --drop --file=users.json --jsonAr
 REM %import% --uri=%local%  --collection=orders --drop --file=orders.json --jsonArray
 REM %import% --uri=%local%  --collection=partners --drop --file=partners.json --jsonArray
 REM %import% --uri=%local%  --collection=ratings --drop --file=ratings.json --jsonArray
-%import% --uri=%local%  --collection=products --drop --file=products.json --jsonArray
+REM %import% --uri=%local%  --collection=products --drop --file=products.json --jsonArray
 GOTO END
 
 :EXPORT
 SET /P AREYOUSURE=Are you sure (Y/[N])?
 IF /I "%AREYOUSURE%" NEQ "Y" GOTO END
 ECHO ---------- Exporting from the local database ----------
-%export% --uri=%local% --collection=users --out=users.json --jsonArray --pretty
-%export% --uri=%local% --collection=orders --out=orders.json --jsonArray --pretty
-%export% --uri=%local% --collection=partners --out=partners.json --jsonArray --pretty
-%export% --uri=%local% --collection=ratings --out=ratings.json --jsonArray --pretty
+REM%export% --uri=%local% --collection=users --out=users.json --jsonArray --pretty
+REM%export% --uri=%local% --collection=orders --out=orders.json --jsonArray --pretty
+REM%export% --uri=%local% --collection=partners --out=partners.json --jsonArray --pretty
+REM%export% --uri=%local% --collection=ratings --out=ratings.json --jsonArray --pretty
 %export% --uri=%local% --collection=products --out=products.json --jsonArray --pretty
 
 GOTO END

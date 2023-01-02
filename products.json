@@ -1,0 +1,34 @@
+[{
+	"_id": {
+		"$oid": "61b6332df39e4edcf5b8a407"
+	},
+	"name": "kutyatáp",
+	"price": 15320,
+	"type": "tápok",
+	"discription": "Finom és egészséges eledel a kis kedvencünk számára.",
+	"orders_id": [
+		{
+			"$oid": "61b63504f39e4edcf5b8a41b"
+		},
+		{
+			"$oid": "61b5ea14f39e4edcf5b8a3bd"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "63aa1816fd8881c0d1b089d4"
+	},
+	"name": "Test",
+	"price": 444,
+	"type": "Test",
+	"discription": "Test",
+	"orders_id": [],
+	"createdAt": {
+		"$date": "2022-12-26T21:54:30.437Z"
+	},
+	"updatedAt": {
+		"$date": "2022-12-26T21:54:30.437Z"
+	}
+}]
+
