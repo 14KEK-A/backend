@@ -22,6 +22,7 @@ export default class UserController implements Controller {
         this.router.get(this.path, authMiddleware, this.getAllUsers);
         this.router.get(`${this.path}/:id`, this.getUserById);
         this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedUsers);
+        this.router.post(this.path, this.createUser);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateUserDto, true)], this.modifyUser);
         this.router.delete(`${this.path}/:id`, this.deleteUser);
     }
@@ -74,6 +75,16 @@ export default class UserController implements Controller {
                     .limit(limit);
             }
             res.send({ count: count, users: users });
+        } catch (error) {
+            next(new HttpError(400, error.message));
+        }
+    };
+    private createUser = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userData = req.body;
+            const newuser = await this.user.create({ ...userData });
+            if (!newuser) return next(new HttpError(400, "Failed to create user"));
+            res.send(newuser);
         } catch (error) {
             next(new HttpError(400, error.message));
         }
