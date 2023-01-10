@@ -131,6 +131,7 @@ export default class AuthenticationController implements Controller {
         const secret = process.env.JWT_SECRET;
         const dataStoredInToken: DataStoredInToken = {
             _id: user._id.toString(),
+            role_name: user.role_name.toString(),
         };
         return {
             expiresIn,
