@@ -6,5 +6,5 @@ export default interface IProduct {
     type: string;
     description: string;
     picture: string;
-    orders_id: Types.ObjectId | string;
+    orders_id: (Types.ObjectId | string)[];
 }
