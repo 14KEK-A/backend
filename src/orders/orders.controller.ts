@@ -10,7 +10,7 @@ import HttpError from "../exceptions/Http";
 import authMiddleware from "../middlewares/auth";
 import * as jwt from "jsonwebtoken";
 import DataStoredInToken from "../interfaces/dataStoredInToken";
-import userModel from "users/users.model";
+import userModel from "../users/users.model";
 
 export default class UserController implements Controller {
     path = "/orders";
