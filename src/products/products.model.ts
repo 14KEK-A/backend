@@ -8,10 +8,16 @@ const productSchema = new Schema<IProduct>(
         type: String,
         description: String,
         picture: String,
-
+        count: Number,
         orders_id: [
             {
                 ref: "Orders",
+                type: Schema.Types.ObjectId,
+            },
+        ],
+        carts_id: [
+            {
+                ref: "Carts",
                 type: Schema.Types.ObjectId,
             },
         ],

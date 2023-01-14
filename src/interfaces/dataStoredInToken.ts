@@ -1,4 +1,4 @@
 export default interface DataStoredInToken {
     _id: string;
-    role_name: string;
+    //role_name: string;
 }

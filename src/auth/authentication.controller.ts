@@ -9,11 +9,11 @@ import DataStoredInToken from "../interfaces/dataStoredInToken";
 import TokenData from "../interfaces/tokenData";
 import validationMiddleware from "../middlewares/validation";
 import User from "../interfaces/iuser";
-import userModel from "./../users/users.model";
+import userModel from "../users/users.model";
 import CreateUserDto from "../users/users.dto";
 import LogInDto from "./logIn.dto";
-//import { OAuth2Client } from "google-auth-library";
-//import IGoogleUserInfo from "interfaces/googleUserInfo";
+import { OAuth2Client } from "google-auth-library";
+import IGoogleUserInfo from "interfaces/googleUserInfo";
 
 export default class AuthenticationController implements Controller {
     public path = "/auth";
@@ -28,7 +28,7 @@ export default class AuthenticationController implements Controller {
         this.router.post(`${this.path}/register`, validationMiddleware(CreateUserDto), this.registration);
         this.router.post(`${this.path}/login`, validationMiddleware(LogInDto), this.loggingIn);
         this.router.post(`${this.path}/logout`, this.loggingOut);
-        //this.router.post(`${this.path}/google`, this.loginAndRegisterWithGoogle);
+        this.router.post(`${this.path}/google`, this.loginAndRegisterWithGoogle);
     }
 
     private registration = async (req: Request, res: Response, next: NextFunction) => {
@@ -79,7 +79,7 @@ export default class AuthenticationController implements Controller {
         res.setHeader("Set-Cookie", ["Authorization=; SameSite=None; Secure; Path=/; Max-age=0"]);
         res.sendStatus(200);
     };
-    /*
+
     private loginAndRegisterWithGoogle = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const client: OAuth2Client = new OAuth2Client();
@@ -121,7 +121,7 @@ export default class AuthenticationController implements Controller {
             next(new HttpException(400, error.message));
         }
     };
-*/
+
     private createCookie(tokenData: TokenData) {
         return `Authorization=${tokenData.token}; SameSite=None; Secure; Path=/; Max-Age=${tokenData.expiresIn}`;
     }
@@ -131,7 +131,7 @@ export default class AuthenticationController implements Controller {
         const secret = process.env.JWT_SECRET;
         const dataStoredInToken: DataStoredInToken = {
             _id: user._id.toString(),
-            role_name: user.role_name.toString(),
+            //role_name: user.role_name.toString(),
         };
         return {
             expiresIn,

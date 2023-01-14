@@ -10,6 +10,10 @@ export default class CreateProductsDto {
     public price: number;
 
     @IsNotEmpty()
+    @IsNumber()
+    public count: number;
+
+    @IsNotEmpty()
     @IsString()
     public description: string;
 

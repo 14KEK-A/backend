@@ -10,7 +10,7 @@ import HttpError from "../exceptions/Http";
 import authMiddleware from "../middlewares/auth";
 import * as jwt from "jsonwebtoken";
 import DataStoredInToken from "../interfaces/dataStoredInToken";
-import userModel from "users/users.model";
+import userModel from "../users/users.model";
 
 export default class UserController implements Controller {
     path = "/orders";
@@ -109,7 +109,7 @@ export default class UserController implements Controller {
     private createOrder = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user_id = this.getDataFromCookie(req);
-            let orderData: Order = req.body;
+            const orderData: Order = req.body;
             orderData.users_id = user_id;
 
             const neworder = this.order.create({ ...orderData });
