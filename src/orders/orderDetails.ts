@@ -13,5 +13,4 @@ const orderDetails = new Schema<IOrderDetails>(
     },
     { versionKey: false },
 );
-
 export default orderDetails;

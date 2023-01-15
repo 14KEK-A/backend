@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import IOrder from "../interfaces/iorder";
 import orderDetails from "./orderDetails";
+
 const orderSchema = new Schema<IOrder>(
     {
         ship_date: {
