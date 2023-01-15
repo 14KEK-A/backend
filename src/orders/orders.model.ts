@@ -1,10 +1,6 @@
 import { Schema, model } from "mongoose";
 import IOrder from "../interfaces/iorder";
 import orderDetails from "./orderDetails";
-<<<<<<< HEAD
-=======
-
->>>>>>> e515cbac68a08a29796079c148d10672a0256fa5
 const orderSchema = new Schema<IOrder>(
     {
         ship_date: {

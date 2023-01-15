@@ -37,7 +37,7 @@ export default class UserController implements Controller {
             const user = await this.user.findById(user_id);
 
             if (user.role_name == "admin") {
-                const orders = await this.order.find().populate("uesr_id");
+                const orders = await this.order.find().populate("user_id");
                 res.send(orders);
             } else {
                 const orders = await this.order.find({ users_id: user_id });
