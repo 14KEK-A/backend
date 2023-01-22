@@ -7,9 +7,14 @@ const orderDetails = new Schema<IOrderDetails>(
             type: Schema.Types.ObjectId,
             ref: "Products",
         },
+        orders_id: {
+            type: Schema.Types.ObjectId,
+            ref: "Products",
+        },
         discount: Boolean,
         price: Number,
         quantity: Number,
+        inCart: Boolean,
     },
     { versionKey: false },
 );

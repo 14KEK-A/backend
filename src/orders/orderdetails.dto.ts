@@ -12,4 +12,8 @@ export default class CreateOrderdetailsDto {
     @IsNotEmpty()
     @IsNumber()
     public quantity: string;
+
+    @IsNotEmpty()
+    @IsBoolean()
+    public inCart: boolean;
 }

@@ -15,12 +15,6 @@ const productSchema = new Schema<IProduct>(
                 type: Schema.Types.ObjectId,
             },
         ],
-        carts_id: [
-            {
-                ref: "Carts",
-                type: Schema.Types.ObjectId,
-            },
-        ],
     },
     { versionKey: false, timestamps: true },
 );

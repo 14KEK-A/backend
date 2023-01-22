@@ -8,5 +8,4 @@ export default interface IProduct {
     description: string;
     picture: string;
     orders_id: (Types.ObjectId | string)[];
-    carts_id: (Types.ObjectId | string)[];
 }

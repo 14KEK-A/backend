@@ -10,7 +10,7 @@ import IdNotValidException from "../exceptions/IdNotValid";
 import HttpError from "../exceptions/Http";
 import authMiddleware from "../middlewares/auth";
 
-export default class UserController implements Controller {
+export default class ProductController implements Controller {
     path = "/partners";
     router = Router();
     private partner = partnerModel;

@@ -12,7 +12,7 @@ import * as jwt from "jsonwebtoken";
 import DataStoredInToken from "../interfaces/dataStoredInToken";
 import userModel from "../users/users.model";
 
-export default class UserController implements Controller {
+export default class OrderController implements Controller {
     path = "/orders";
     router = Router();
     private order = orderModel;
@@ -27,7 +27,9 @@ export default class UserController implements Controller {
         this.router.get(`${this.path}/:id`, authMiddleware, this.getOrderById);
         this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedOrders);
         this.router.post(this.path, authMiddleware, this.createOrder);
+        this.router.post(`${this.path}/:id`, authMiddleware, this.addToCartById);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateOrderDto, true), authMiddleware], this.modifyOrder);
+        this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateOrderDto, true), authMiddleware], this.removeFromCartById);
         this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteOrder);
     }
 
@@ -175,4 +177,28 @@ export default class UserController implements Controller {
 
         return user_id;
     }
+    private addToCartById = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = req.params.id;
+            const user_id = this.getDataFromCookie(req);
+            const order = await this.order.findById(id);
+            const orderData: Order = req.body;
+            orderData.users_id = user_id;
+            this.order.findByIdAndUpdate(order.id, { $push: { products: { ...req.body, from_id: order } } });
+        } catch (error) {
+            next(new HttpError(400, error.message));
+        }
+    };
+    private removeFromCartById = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = req.params.id;
+            const user_id = this.getDataFromCookie(req);
+            const order = await this.order.findById(id);
+            const orderData: Order = req.body;
+            orderData.users_id = user_id;
+            this.order.findByIdAndRemove(order.id, { $pull: { products: { ...req.body, from_id: order } } });
+        } catch (error) {
+            next(new HttpError(400, error.message));
+        }
+    };
 }
