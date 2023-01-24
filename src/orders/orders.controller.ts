@@ -157,7 +157,7 @@ export default class OrderController implements Controller {
             const order = await this.order.findById(id);
 
             if (order.users_id == user_id || user.role_name == "admin") {
-                const successResponse = await this.order.findByIdAndDelete(id);
+                //const successResponse = await this.order.findByIdAndDelete(id);
             } else {
                 return next(new HttpError(400, "Order doesn't exist."));
             }
