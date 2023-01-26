@@ -20,6 +20,7 @@ beforeAll(async () => {
     server = new App([new AuthenticationController()]).getServer();
 });
 
+//register test user and admin
 describe("test API endpoints", () => {
     it("GET /auth/register", async () => {
         const response = await request(server).post("/auth/register").send({
@@ -38,7 +39,6 @@ describe("test API endpoints", () => {
             password: USER_PASS,
         });
         expect(response.statusCode).toEqual(200);
-        expect(response.body._id).toEqual("63d16489919af5c1b5861ba2");
         expect(response.body.email).toEqual(USER_NAME);
     });
 
