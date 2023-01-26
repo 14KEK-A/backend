@@ -20,11 +20,11 @@ export default class UserController implements Controller {
 
     private initializeRoutes() {
         this.router.get(this.path, authMiddleware, this.getAllUsers);
-        this.router.get(`${this.path}/:id`, this.getUserById);
+        this.router.get(`${this.path}/:id`, authMiddleware, this.getUserById);
         this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedUsers);
         this.router.post(this.path, this.createUser);
         this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateUserDto, true)], this.modifyUser);
-        this.router.delete(`${this.path}/:id`, this.deleteUser);
+        this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteUser);
     }
 
     private getAllUsers = async (req: Request, res: Response, next: NextFunction) => {

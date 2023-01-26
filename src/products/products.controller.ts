@@ -20,10 +20,10 @@ export default class ProductController implements Controller {
     private initializeRoutes() {
         this.router.get(this.path, this.getAllProducts);
         this.router.get(`${this.path}/:id`, this.getProductById);
-        this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedProducts);
-        this.router.post(this.path, this.createProduct);
-        this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateProductDto, true)], this.modifyProduct);
-        this.router.delete(`${this.path}/:id`, this.deleteProductById);
+        this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, this.getPaginatedProducts);
+        this.router.post(this.path, authMiddleware, this.createProduct);
+        this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateProductDto, true), authMiddleware], this.modifyProduct);
+        this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteProductById);
     }
 
     private getAllProducts = async (req: Request, res: Response, next: NextFunction) => {

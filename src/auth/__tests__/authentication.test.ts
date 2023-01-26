@@ -13,6 +13,7 @@ import "dotenv/config";
 validateEnv();
 
 let server: Express.Application;
+const { USER_NAME, USER_PASS, ADMIN_NAME, ADMIN_PASS } = process.env;
 
 beforeAll(async () => {
     //server = new App([new PostController(), new AuthenticationController(), new UserController(), new ReportController()]).getServer();
@@ -22,23 +23,23 @@ beforeAll(async () => {
 describe("test API endpoints", () => {
     it("GET /auth/register", async () => {
         const response = await request(server).post("/auth/register").send({
-            name: "student001",
-            email: "student001@jedlik.eu",
-            password: "student001",
+            name: "user",
+            email: USER_NAME,
+            password: USER_PASS,
         });
         expect(response.statusCode).toEqual(400);
-        expect(response.body.message).toEqual("User with email student001@jedlik.eu already exists");
+        expect(response.body.message).toEqual(`User with email ${USER_NAME} already exists`);
         expect(response.body.status).toEqual(400);
     });
 
     it("GET /auth/login", async () => {
         const response = await request(server).post("/auth/login").send({
-            email: "student001@jedlik.eu",
-            password: "student001",
+            email: USER_NAME,
+            password: USER_PASS,
         });
         expect(response.statusCode).toEqual(200);
-        expect(response.body._id).toEqual("61b5e9c0f39e4edcf5b8a3b9");
-        expect(response.body.email).toEqual("student001@jedlik.eu");
+        expect(response.body._id).toEqual("63d16489919af5c1b5861ba2");
+        expect(response.body.email).toEqual(USER_NAME);
     });
 
     it("GET /auth/logout", async () => {

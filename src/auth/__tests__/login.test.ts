@@ -5,7 +5,7 @@ import "dotenv/config";
 import validateEnv from "../../utils/validateEnv";
 import App from "../../app";
 import userModel from "../../users/users.model";
-import AuthenticationController from "auth/authentication.controller";
+import AuthenticationController from "../authentication.controller";
 
 validateEnv();
 
