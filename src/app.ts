@@ -34,7 +34,7 @@ export default class App {
         // this.app.use(loggerMiddleware);
         this.app.use(
             cors({
-                origin: ["https://fanciful-pudding-2d9808.netlify.app/", "http://localhost:8080", "http://127.0.0.1:8080"],
+                origin: ["https://fourpet-24cy.onrender.com", "https://fanciful-pudding-2d9808.netlify.app/", "http://localhost:8080", "http://127.0.0.1:8080"],
                 allowedHeaders: ["Content-Type", "Authorization", "Set-Cookie", "Cache-Control", "Content-Language", "Expires", "Last-Modified", "Pragma"],
                 credentials: true,
                 exposedHeaders: ["Set-Cookie"],
