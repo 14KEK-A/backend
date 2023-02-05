@@ -10,6 +10,7 @@ import "dotenv/config";
 let server: Express;
 let cookie: string | any;
 const { USER_NAME, USER_PASS, ADMIN_NAME, ADMIN_PASS } = process.env;
+const id = "61b63504f39e4edcf5b8a41b";
 
 beforeAll(async () => {
     server = new App([new AuthenticationController(), new OrderController(), new ProductController()]).getServer();
@@ -19,10 +20,10 @@ describe("ORDERS, not logged in", () => {
     it("any PATH, should return statuscode 401", async () => {
         expect.assertions(5);
         const allResponse = await request(server).get(`/orders`);
-        const idResponse = await request(server).get(`/orders/61b63504f39e4edcf5b8a41b`);
+        const idResponse = await request(server).get(`/orders/${id}`);
         const paginatedResponse = await request(server).get("/orders/offset/limit/order/sort/keyword`");
-        const patchResponse = await request(server).patch("/orders/61b63504f39e4edcf5b8a41b");
-        const deleteResponse = await request(server).delete(`/orders/61b63504f39e4edcf5b8a41b`);
+        const patchResponse = await request(server).patch(`/orders/${id}`);
+        const deleteResponse = await request(server).delete(`/orders/${id}`);
         expect(allResponse.statusCode).toBe(StatusCode.Unauthorized);
         expect(idResponse.statusCode).toBe(StatusCode.Unauthorized);
         expect(paginatedResponse.statusCode).toBe(StatusCode.Unauthorized);
@@ -48,7 +49,7 @@ describe("ORDERS, logged in as user", () => {
 
     it("GET /orders/:id should return 401", async () => {
         expect.assertions(1);
-        const res = await request(server).get("/orders/61b63504f39e4edcf5b8a41b").set("Cookie", cookie);
+        const res = await request(server).get(`/orders/${id}`).set("Cookie", cookie);
         expect(res.statusCode).toBe(StatusCode.Unauthorized);
     });
 
@@ -60,13 +61,13 @@ describe("ORDERS, logged in as user", () => {
 
     it("PATCH /orders/:id should return 401", async () => {
         expect.assertions(1);
-        const res = await request(server).patch("/orders/61b63504f39e4edcf5b8a41b").set("Cookie", cookie).send({ order_date: Date.now });
+        const res = await request(server).patch(`/orders/${id}`).set("Cookie", cookie).send({ order_date: Date.now });
         expect(res.statusCode).toBe(StatusCode.Unauthorized);
     });
 
     /*it("DELETE /orders/:id should return 401", async () => {
         expect.assertions(1);
-        const res = await request(server).patch("/orders/61b63504f39e4edcf5b8a41b").set("Cookie", cookie);
+        const res = await request(server).patch(`/orders/${id}`).set("Cookie", cookie);
         expect(res.statusCode).toBe(StatusCode.Unauthorized);
     });*/
 });
@@ -88,7 +89,7 @@ describe("ORDERS, logged in as admin", () => {
 
     it("GET /orders/:id should return 200", async () => {
         expect.assertions(1);
-        const res = await request(server).get("/orders/61b63504f39e4edcf5b8a41b").set("Cookie", cookie);
+        const res = await request(server).get(`/orders/${id}`).set("Cookie", cookie);
         expect(res.statusCode).toBe(StatusCode.OK);
     });
 
@@ -100,13 +101,13 @@ describe("ORDERS, logged in as admin", () => {
 
     it("PATCH /orders/:id should return 200", async () => {
         expect.assertions(1);
-        const res = await request(server).patch("/orders/61b63504f39e4edcf5b8a41b").set("Cookie", cookie).send({ order_date: Date.now });
+        const res = await request(server).patch(`/orders/${id}`).set("Cookie", cookie).send({ order_date: Date.now });
         expect(res.statusCode).toBe(StatusCode.OK);
     });
 
     /*it("DELETE /orders/:id should return 200", async () => {
         expect.assertions(1);
-        const res = await request(server).patch("/orders/61b63504f39e4edcf5b8a41b").set("Cookie", cookie);
+        const res = await request(server).patch(`/orders/${id}`).set("Cookie", cookie);
         expect(res.statusCode).toBe(StatusCode.OK);
     });*/
 });

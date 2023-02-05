@@ -8,7 +8,6 @@ const productSchema = new Schema<IProduct>(
         type: String,
         description: String,
         picture: String,
-        count: Number,
         orders_id: [
             {
                 ref: "Orders",

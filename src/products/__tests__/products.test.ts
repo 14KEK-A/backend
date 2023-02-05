@@ -9,6 +9,7 @@ import "dotenv/config";
 let server: Express;
 let cookie: string | any;
 const { USER_NAME, USER_PASS, ADMIN_NAME, ADMIN_PASS } = process.env;
+const id = "63aa1816fd8881c0d1b089d4";
 
 beforeAll(async () => {
     server = new App([new AuthenticationController(), new ProductController()]).getServer();
@@ -16,9 +17,9 @@ beforeAll(async () => {
 
 describe("PRODUCTS, not logged in", () => {
     it("GET requests should return statuscode 200", async () => {
-        expect.assertions(6);
+        expect.assertions(3);
         const allResponse = await request(server).get(`/products`);
-        const idResponse = await request(server).get(`/products/61b6332df39e4edcf5b8a407`);
+        const idResponse = await request(server).get(`/products/${id}`);
         const paginatedResponse = await request(server).get("/products/offset/limit/order/sort/keyword");
         expect(allResponse.statusCode).toBe(StatusCode.OK);
         expect(idResponse.statusCode).toBe(StatusCode.OK);
@@ -26,9 +27,10 @@ describe("PRODUCTS, not logged in", () => {
     });
 
     it("POST, PATCH and DELETE requests should return statuscode 401", async () => {
+        expect.assertions(3);
         const createResponse = await request(server).post("/products");
-        const patchResponse = await request(server).patch("/products/61b6332df39e4edcf5b8a407");
-        const deleteResponse = await request(server).delete(`/products/61b6332df39e4edcf5b8a407`);
+        const patchResponse = await request(server).patch(`/products/${id}`);
+        const deleteResponse = await request(server).delete(`/products/${id}`);
         expect(createResponse.statusCode).toBe(StatusCode.Unauthorized);
         expect(patchResponse.statusCode).toBe(StatusCode.Unauthorized);
         expect(deleteResponse.statusCode).toBe(StatusCode.Unauthorized);
@@ -52,7 +54,7 @@ describe("products, logged in as admin", () => {
 
     it("GET /products/:id should return 200", async () => {
         expect.assertions(1);
-        const res = await request(server).get("/products/63aa1816fd8881c0d1b089d4").set("Cookie", cookie);
+        const res = await request(server).get(`/products/${id}`).set("Cookie", cookie);
         expect(res.statusCode).toBe(StatusCode.OK);
     });
 
@@ -64,13 +66,13 @@ describe("products, logged in as admin", () => {
 
     it("PATCH /products/:id should return 200", async () => {
         expect.assertions(1);
-        const res = await request(server).patch("/products/61b6332df39e4edcf5b8a407").set("Cookie", cookie).send({ order_date: Date.now });
+        const res = await request(server).patch(`/products/${id}`).set("Cookie", cookie).send({ order_date: Date.now });
         expect(res.statusCode).toBe(StatusCode.OK);
     });
 
     /*it("DELETE /products/:id should return 200", async () => {
         expect.assertions(1);
-        const res = await request(server).patch("/products/61b6332df39e4edcf5b8a407").set("Cookie", cookie);
+        const res = await request(server).patch(`/products/${id}`).set("Cookie", cookie);
         expect(res.statusCode).toBe(StatusCode.OK);
     });*/
 });

@@ -8,26 +8,33 @@ import ratingModel from "./ratings.model";
 import validationMiddleware from "../middlewares/validation";
 import HttpError from "../exceptions/Http";
 import authMiddleware from "../middlewares/auth";
+import getDataFromCookie from "../utils/dataFromCookie";
+import userModel from "../users/users.model";
 export default class RatingController implements Controller {
     public path = "/ratings";
     public router = Router();
     private rating = ratingModel;
+    private user = userModel;
 
     constructor() {
         this.initializeRoutes();
     }
 
     private initializeRoutes() {
-        this.router.get(this.path, this.getAllRatings);
+        this.router.get(this.path, authMiddleware, this.getAllRatings);
         this.router.get(`${this.path}/:id`, this.getRatingById);
         this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedRatings);
         this.router.post(this.path, [authMiddleware, validationMiddleware(CreateRatingsDto, false)], this.createRating);
-        this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateRatingsDto, true)], this.modifyRating);
-        this.router.delete(`${this.path}/:id`, this.deleteRating);
+        this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateRatingsDto, true), authMiddleware], this.modifyRating);
+        this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteRating);
     }
 
     private getAllRatings = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
+            if (user.role_name != "admin") return next(new HttpError(401, "You don't have permisson to get that!"));
+
             const ratings = await this.rating.find();
             res.send(ratings);
         } catch (error) {
@@ -37,6 +44,10 @@ export default class RatingController implements Controller {
 
     private getPaginatedRatings = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
+            if (user.role_name != "admin") return next(new HttpError(401, "You don't have permisson to get that!"));
+
             const offset = parseInt(req.params.offset);
             const limit = parseInt(req.params.limit);
             const order = req.params.order; // order?
@@ -81,11 +92,16 @@ export default class RatingController implements Controller {
 
     private modifyRating = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
+
             const id = req.params.id;
-            if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
+            //if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 
             const ratingData: Rating = req.body;
-            const rating = await this.rating.findByIdAndUpdate(id, ratingData, { new: true });
+            let rating = await this.rating.findById(id);
+            if (user.role_name != "admin" && rating.users_id != userId) return next(new HttpError(401, "You don't have permisson to do that!"));
+            rating = await this.rating.findByIdAndUpdate(id, ratingData, { new: true });
             //if (!user) return next(new UserNotFoundException(id));
 
             res.send(rating);
@@ -106,11 +122,17 @@ export default class RatingController implements Controller {
 
     private deleteRating = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const id = req.params.id;
-            if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
 
-            //const successResponse = await this.rating.findByIdAndDelete(id);
-            // if (!successResponse) return next(new UserNotFoundException(id));
+            const id = req.params.id;
+            //if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
+
+            const rating = await this.rating.findById(id);
+            if (user.role_name != "admin" && rating.users_id != userId) return next(new HttpError(401, "You don't have permisson to do that!"));
+
+            const successResponse = await this.rating.findByIdAndDelete(id);
+            if (!successResponse) return next(new HttpError(400, "An error occured."));
 
             res.sendStatus(200);
         } catch (error) {

@@ -11,6 +11,7 @@ import authMiddleware from "../middlewares/auth";
 import * as jwt from "jsonwebtoken";
 import DataStoredInToken from "../interfaces/dataStoredInToken";
 import userModel from "../users/users.model";
+import getDataFromCookie from "../utils/dataFromCookie";
 
 export default class OrderController implements Controller {
     path = "/orders";
@@ -35,14 +36,14 @@ export default class OrderController implements Controller {
 
     private getAllOrders = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const user_id = this.getDataFromCookie(req);
-            const user = await this.user.findById(user_id);
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
 
             if (user.role_name == "admin") {
                 const orders = await this.order.find();
                 res.send(orders);
             } else {
-                const orders = await this.order.find({ users_id: user_id });
+                const orders = await this.order.find({ users_id: userId });
                 res.send(orders);
             }
         } catch (error) {
@@ -56,8 +57,8 @@ export default class OrderController implements Controller {
             const order = req.params.order; // order?
             const sort = parseInt(req.params.sort); // desc: -1  asc: 1
 
-            const user_id = this.getDataFromCookie(req);
-            const user = await this.user.findById(user_id);
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
 
             let orders = [];
             let count = 0;
@@ -91,14 +92,14 @@ export default class OrderController implements Controller {
             const id = req.params.id;
             if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 
-            const user_id = this.getDataFromCookie(req);
-            const user = await this.user.findById(user_id);
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
 
             const order = await this.order.findById(id);
             if (!order) return next(new HttpError(404, "Document doesn't exist."));
             //if (!user) return next(new UserNotFoundException(id));
 
-            if (order.users_id == user_id || user.role_name == "admin") {
+            if (order.users_id == userId || user.role_name == "admin") {
                 res.send(order);
             } else {
                 return next(new HttpError(401, "This order dosen't belong to the user logged in."));
@@ -110,9 +111,9 @@ export default class OrderController implements Controller {
 
     private createOrder = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const user_id = this.getDataFromCookie(req);
+            const userId = getDataFromCookie(req);
             const orderData: Order = req.body;
-            orderData.users_id = user_id;
+            orderData.users_id = userId;
 
             const neworder = this.order.create({ ...orderData });
 
@@ -128,11 +129,11 @@ export default class OrderController implements Controller {
             const id = req.params.id;
             if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 
-            const user_id = this.getDataFromCookie(req);
-            const user = await this.user.findById(user_id);
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
             let order = await this.order.findById(id);
 
-            if (order.users_id == user_id || user.role_name == "admin") {
+            if (order.users_id == userId || user.role_name == "admin") {
                 const orderData: Order = req.body;
                 order = await this.order.findByIdAndUpdate(id, orderData, { new: true });
             } else {
@@ -152,11 +153,11 @@ export default class OrderController implements Controller {
             const id = req.params.id;
             if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 
-            const user_id = this.getDataFromCookie(req);
-            const user = await this.user.findById(user_id);
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
             const order = await this.order.findById(id);
 
-            if (order.users_id == user_id || user.role_name == "admin") {
+            if (order.users_id == userId || user.role_name == "admin") {
                 //const successResponse = await this.order.findByIdAndDelete(id);
             } else {
                 return next(new HttpError(400, "Order doesn't exist."));
@@ -168,22 +169,22 @@ export default class OrderController implements Controller {
         }
     };
 
-    private getDataFromCookie(req: Request): string {
+    /*private getDataFromCookie(req: Request): string {
         const cookies = req.cookies;
         const secret = process.env.JWT_SECRET;
         const verificationResponse = jwt.verify(cookies.Authorization, secret) as DataStoredInToken;
 
-        const user_id = verificationResponse._id;
+        const userId = verificationResponse._id;
 
-        return user_id;
-    }
+        return userId;
+    }*/
     private addToCartById = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            const user_id = this.getDataFromCookie(req);
+            const userId = getDataFromCookie(req);
             const order = await this.order.findById(id);
             const orderData: Order = req.body;
-            orderData.users_id = user_id;
+            orderData.users_id = userId;
             this.order.findByIdAndUpdate(order.id, { $push: { products: { ...req.body, from_id: order } } });
         } catch (error) {
             next(new HttpError(400, error.message));
@@ -192,10 +193,10 @@ export default class OrderController implements Controller {
     private removeFromCartById = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            const user_id = this.getDataFromCookie(req);
+            const userId = getDataFromCookie(req);
             const order = await this.order.findById(id);
             const orderData: Order = req.body;
-            orderData.users_id = user_id;
+            orderData.users_id = userId;
             this.order.findByIdAndRemove(order.id, { $pull: { products: { ...req.body, from_id: order } } });
         } catch (error) {
             next(new HttpError(400, error.message));

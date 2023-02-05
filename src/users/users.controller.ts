@@ -9,6 +9,7 @@ import UserNotFoundException from "../exceptions/UserNotFound";
 import IdNotValidException from "../exceptions/IdNotValid";
 import HttpError from "../exceptions/Http";
 import authMiddleware from "../middlewares/auth";
+import getDataFromCookie from "../utils/dataFromCookie";
 export default class UserController implements Controller {
     path = "/users";
     router = Router();
@@ -23,12 +24,16 @@ export default class UserController implements Controller {
         this.router.get(`${this.path}/:id`, authMiddleware, this.getUserById);
         this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedUsers);
         this.router.post(this.path, this.createUser);
-        this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateUserDto, true)], this.modifyUser);
+        this.router.patch(`${this.path}/:id`, [validationMiddleware(CreateUserDto, true), authMiddleware], this.modifyUser);
         this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteUser);
     }
 
     private getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const loggedUserId = getDataFromCookie(req);
+            const loggedUser = this.user.findById(loggedUserId);
+            if ((await loggedUser).role_name != "admin") return next(new HttpError(401, "You dont't have permisson to get that!"));
+
             const users = await this.user.find();
             res.send(users);
         } catch (error) {
@@ -38,6 +43,10 @@ export default class UserController implements Controller {
 
     private getUserById = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const loggedUserId = getDataFromCookie(req);
+            const loggedUser = this.user.findById(loggedUserId);
+            if ((await loggedUser).role_name != "admin") return next(new HttpError(401, "You dont't have permisson to get that!"));
+
             const id = req.params.id;
             if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 
@@ -52,6 +61,10 @@ export default class UserController implements Controller {
 
     private getPaginatedUsers = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const loggedUserId = getDataFromCookie(req);
+            const loggedUser = this.user.findById(loggedUserId);
+            if ((await loggedUser).role_name != "admin") return next(new HttpError(401, "You dont't have permisson to get that!"));
+
             const offset = parseInt(req.params.offset);
             const limit = parseInt(req.params.limit);
             const order = req.params.order; // order?
@@ -81,6 +94,10 @@ export default class UserController implements Controller {
     };
     private createUser = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const loggedUserId = getDataFromCookie(req);
+            const loggedUser = this.user.findById(loggedUserId);
+            if ((await loggedUser).role_name != "admin") return next(new HttpError(401, "You dont't have permisson to do that!"));
+
             const userData = req.body;
             const newuser = await this.user.create({ ...userData });
             if (!newuser) return next(new HttpError(400, "Failed to create user"));
@@ -91,6 +108,10 @@ export default class UserController implements Controller {
     };
     private modifyUser = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const loggedUserId = getDataFromCookie(req);
+            const loggedUser = this.user.findById(loggedUserId);
+            if ((await loggedUser).role_name != "admin" && loggedUserId != req.params.id) return next(new HttpError(401, "You dont't have permisson to do that!"));
+
             const id = req.params.id;
             if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 
@@ -106,6 +127,10 @@ export default class UserController implements Controller {
 
     private deleteUser = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const loggedUserId = getDataFromCookie(req);
+            const loggedUser = this.user.findById(loggedUserId);
+            if ((await loggedUser).role_name != "admin" && loggedUserId != req.params.id) return next(new HttpError(401, "You dont't have permisson to do that!"));
+
             const id = req.params.id;
             if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 

@@ -9,26 +9,33 @@ import Partner from "../interfaces/ipartner";
 import IdNotValidException from "../exceptions/IdNotValid";
 import HttpError from "../exceptions/Http";
 import authMiddleware from "../middlewares/auth";
+import userModel from "../users/users.model";
+import getDataFromCookie from "../utils/dataFromCookie";
 
 export default class ProductController implements Controller {
     path = "/partners";
     router = Router();
     private partner = partnerModel;
+    private user = userModel;
 
     constructor() {
         this.initializeRoutes();
     }
 
     private initializeRoutes() {
-        this.router.get(this.path, this.getAllPartners);
-        this.router.get(`${this.path}/:id`, this.getPartnerById);
+        this.router.get(this.path, authMiddleware, this.getAllPartners);
+        this.router.get(`${this.path}/:id`, authMiddleware, this.getPartnerById);
         this.router.get(`${this.path}/:offset/:limit/:order/:sort/:keyword?`, authMiddleware, this.getPaginatedPartners);
-        this.router.patch(`${this.path}/:id`, [validationMiddleware(CreatePartnerDto, true)], this.modifyPartner);
-        this.router.delete(`${this.path}/:id`, this.deletePartner);
+        this.router.patch(`${this.path}/:id`, [validationMiddleware(CreatePartnerDto, true), authMiddleware], this.modifyPartner);
+        this.router.delete(`${this.path}/:id`, authMiddleware, this.deletePartner);
     }
 
     private getAllPartners = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
+            if (user.role_name == "user") return next(new HttpError(401, "You don't have permission to get that!"));
+
             const partners = await this.partner.find();
             res.send(partners);
         } catch (error) {
@@ -37,6 +44,10 @@ export default class ProductController implements Controller {
     };
     private getPaginatedPartners = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
+            if (user.role_name == "user") return next(new HttpError(401, "You don't have permission to get that!"));
+
             const offset = parseInt(req.params.offset);
             const limit = parseInt(req.params.limit);
             const order = req.params.order; // order?
@@ -67,6 +78,10 @@ export default class ProductController implements Controller {
 
     private getPartnerById = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
+            if (user.role_name == "user") return next(new HttpError(401, "You don't have permission to get that!"));
+
             const id = req.params.id;
             if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 
@@ -81,6 +96,10 @@ export default class ProductController implements Controller {
 
     private modifyPartner = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
+            if (user.role_name == "user") return next(new HttpError(401, "You don't have permission to get that!"));
+
             const id = req.params.id;
             if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 
@@ -96,6 +115,10 @@ export default class ProductController implements Controller {
 
     private deletePartner = async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const userId = getDataFromCookie(req);
+            const user = await this.user.findById(userId);
+            if (user.role_name == "user") return next(new HttpError(401, "You don't have permission to get that!"));
+
             const id = req.params.id;
             if (!Types.ObjectId.isValid(id)) return next(new IdNotValidException(id));
 
